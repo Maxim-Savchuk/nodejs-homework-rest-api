@@ -1,3 +1,4 @@
+const gravatar = require("gravatar");
 const { User } = require("../../models");
 
 const signup = async (req, res) => {
@@ -6,10 +7,12 @@ const signup = async (req, res) => {
   if (user) {
     res.status(409).json({ message: "Email in use" });
   }
+  const avatarURL = gravatar.url(email);
   const newUser = new User({
     email,
     subscription,
     token,
+    avatarURL,
   });
   newUser.setPassword(password);
   newUser.save();
@@ -20,6 +23,7 @@ const signup = async (req, res) => {
       user: {
         email,
         subscription,
+        avatarURL,
       },
     },
   });
